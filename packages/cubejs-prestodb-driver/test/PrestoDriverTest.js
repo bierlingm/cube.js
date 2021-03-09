@@ -4,7 +4,6 @@ const { DockerComposeEnvironment, Wait } = require('testcontainers');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { Duration, TemporalUnit } = require('node-duration');
 
-const { GenericContainer } = require('testcontainers');
 const PrestoDriver = require('../driver/PrestoDriver');
 
 require('should');
@@ -20,7 +19,7 @@ describe('PrestoHouseDriver', () => {
   };
 
   // eslint-disable-next-line consistent-return
-  before(async function () {
+  before(async () => {
     this.timeout(2 * 60 * 1000);
 
     if (process.env.TEST_PRESTO_HOST) {
@@ -55,7 +54,7 @@ describe('PrestoHouseDriver', () => {
   });
 
   // eslint-disable-next-line consistent-return
-  after(async function () {
+  after(async () => {
     this.timeout(30 * 1000);
 
     if (env) {
@@ -64,10 +63,12 @@ describe('PrestoHouseDriver', () => {
   });
 
   it('should construct', async () => {
-    await doWithDriver(() => {});
+    await doWithDriver(() => {
+      //
+    });
   });
 
-  it('should test connection', async function () {
+  it('should test connection', async () => {
     // Presto can be slow after starting...
     this.timeout(10 * 1000);
 

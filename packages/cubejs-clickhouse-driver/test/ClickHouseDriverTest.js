@@ -1,5 +1,5 @@
 /* globals describe, before, after, it */
-const { GenericContainer } = require("testcontainers");
+const { GenericContainer } = require('testcontainers');
 const ClickHouseDriver = require('../driver/ClickHouseDriver');
 
 require('should');
@@ -18,7 +18,7 @@ describe('ClickHouseDriver', () => {
     }
   };
 
-  before(async function () {
+  before(async () => {
     this.timeout(20 * 1000);
 
     const version = process.env.TEST_CLICKHOUSE_VERSION || 'latest';
@@ -33,7 +33,7 @@ describe('ClickHouseDriver', () => {
     };
   });
 
-  after(async function () {
+  after(async () => {
     this.timeout(10 * 1000);
 
     if (container) {
@@ -42,7 +42,9 @@ describe('ClickHouseDriver', () => {
   });
 
   it('should construct', async () => {
-    await doWithDriver(() => {});
+    await doWithDriver(() => {
+      //
+    });
   });
 
   it('should test connection', async () => {
@@ -53,7 +55,7 @@ describe('ClickHouseDriver', () => {
 
   it('should select raw sql', async () => {
     await doWithDriver(async (driver) => {
-      const numbers = await driver.query("SELECT number FROM system.numbers LIMIT 10");
+      const numbers = await driver.query('SELECT number FROM system.numbers LIMIT 10');
       numbers.should.be.deepEqual([
         { number: '0' },
         { number: '1' },
@@ -71,7 +73,7 @@ describe('ClickHouseDriver', () => {
 
   it('should select raw sql multiple times', async () => {
     await doWithDriver(async (driver) => {
-      let numbers = await driver.query("SELECT number FROM system.numbers LIMIT 5");
+      let numbers = await driver.query('SELECT number FROM system.numbers LIMIT 5');
       numbers.should.be.deepEqual([
         { number: '0' },
         { number: '1' },
@@ -79,7 +81,7 @@ describe('ClickHouseDriver', () => {
         { number: '3' },
         { number: '4' },
       ]);
-      numbers = await driver.query("SELECT number FROM system.numbers LIMIT 5");
+      numbers = await driver.query('SELECT number FROM system.numbers LIMIT 5');
       numbers.should.be.deepEqual([
         { number: '0' },
         { number: '1' },
@@ -92,9 +94,9 @@ describe('ClickHouseDriver', () => {
 
   it('should get tables', async () => {
     await doWithDriver(async (driver) => {
-      const tables = await driver.getTablesQuery("system");
+      const tables = await driver.getTablesQuery('system');
       tables.should.containDeep([
-        { table_name: "numbers" },
+        { table_name: 'numbers' },
       ]);
     });
   });
@@ -172,9 +174,9 @@ describe('ClickHouseDriver', () => {
       try {
         await driver.createSchemaIfNotExists(name);
         await driver.query(`CREATE TABLE ${name}.test (x Int32, s String) ENGINE Log`);
-        await driver.query(`INSERT INTO ${name}.test VALUES (?, ?), (?, ?), (?, ?)`, [1, "str1", 2, "str2", 3, "str3"]);
+        await driver.query(`INSERT INTO ${name}.test VALUES (?, ?), (?, ?), (?, ?)`, [1, 'str1', 2, 'str2', 3, 'str3']);
         const values = await driver.query(`SELECT * FROM ${name}.test WHERE x = ?`, 2);
-        values.should.deepEqual([{ x: '2', s: "str2" }]);
+        values.should.deepEqual([{ x: '2', s: 'str2' }]);
       } finally {
         await driver.query(`DROP DATABASE ${name}`);
       }

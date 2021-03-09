@@ -1,5 +1,3 @@
-/* globals describe, before, after, it */
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DockerComposeEnvironment, StartedDockerComposeEnvironment, Wait } from 'testcontainers';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -7,9 +5,6 @@ import { Duration, TemporalUnit } from 'node-duration';
 import path from 'path';
 
 import { DruidDriver, DruidDriverConfiguration } from '../src/DruidDriver';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-require('should');
 
 describe('DruidDriver', () => {
   let env: StartedDockerComposeEnvironment|null = null;
@@ -66,14 +61,14 @@ describe('DruidDriver', () => {
     }
   });
 
-  it('should construct', async function () {
-    this.timeout(10 * 1000);
+  it('should construct', async () => {
+    jest.setTimeout(10 * 1000);
 
     return doWithDriver(async () => {});
   });
 
-  it('should test connection', async function () {
-    this.timeout(10 * 1000);
+  it('should test connection', async () => {
+    jest.setTimeout(10 * 1000);
 
     return doWithDriver(async (driver) => {
       await driver.testConnection();
